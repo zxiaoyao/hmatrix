@@ -1,0 +1,96 @@
+\hypertarget{hmatrix_8cpp}{\section{hmatrix.\-cpp File Reference}
+\label{hmatrix_8cpp}\index{hmatrix.\-cpp@{hmatrix.\-cpp}}
+}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$iomanip$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{hmatrix_8cpp_a300f7db76316bae5cddaaaba43b7f8d1}{load\-\_\-hb\-\_\-data} (vector$<$ vector$<$ char $>$ $>$ \&hinter, string hb\-\_\-dat\-\_\-file=\char`\"{}hb.\-dat\char`\"{})
+\item 
+int \hyperlink{hmatrix_8cpp_ae81cfaa5aaa07ee8dc7b567571f814b1}{load\-\_\-ms\-\_\-data} (vector$<$ string $>$ \&res\-Name, vector$<$ vector$<$ int $>$ $>$ \&resinter, vector$<$ vector$<$ char $>$ $>$ \&hinter, string ms\-\_\-dat\-\_\-file=\char`\"{}ms.\-dat\char`\"{})
+\item 
+void \hyperlink{hmatrix_8cpp_a084d8f59d56eea1c95cca39c97ef65af}{output\-\_\-hb\-\_\-txt} (vector$<$ string $>$ \&res\-Name, vector$<$ vector$<$ int $>$ $>$ \&resinter, int total\-State, float threshold=0.\-001, string hb\-\_\-txt\-\_\-file=\char`\"{}hb.\-txt\char`\"{})
+\item 
+int \hyperlink{hmatrix_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{hmatrix_8cpp_a300f7db76316bae5cddaaaba43b7f8d1}{\index{hmatrix.\-cpp@{hmatrix.\-cpp}!load\-\_\-hb\-\_\-data@{load\-\_\-hb\-\_\-data}}
+\index{load\-\_\-hb\-\_\-data@{load\-\_\-hb\-\_\-data}!hmatrix.cpp@{hmatrix.\-cpp}}
+\subsubsection[{load\-\_\-hb\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}void load\-\_\-hb\-\_\-data (
+\begin{DoxyParamCaption}
+\item[{vector$<$ vector$<$ char $>$ $>$ \&}]{hinter, }
+\item[{string}]{hb\-\_\-dat\-\_\-file = {\ttfamily \char`\"{}hb.dat\char`\"{}}}
+\end{DoxyParamCaption}
+)}}\label{hmatrix_8cpp_a300f7db76316bae5cddaaaba43b7f8d1}
+Load hbond info between every two conformers from \char`\"{}hb.\-dat\char`\"{}, which is a binary file. The first 4 bytes is an integer indicating the number of conformers, followed by n$\ast$n matrix. The matrix element (i, j) being 1 means there is hbond between conformer i and conformer j, with conformer i being the donor and conformer j the accepter. 0 means no hbond between conformer i and j.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hinter} & the matrix stores the hbond info between every two conformers. \\
+\hline
+{\em hb\-\_\-dat\-\_\-file} & the name of the binary file which saves the hbond info between every two conformers. \\
+\hline
+\end{DoxyParams}
+\hypertarget{hmatrix_8cpp_ae81cfaa5aaa07ee8dc7b567571f814b1}{\index{hmatrix.\-cpp@{hmatrix.\-cpp}!load\-\_\-ms\-\_\-data@{load\-\_\-ms\-\_\-data}}
+\index{load\-\_\-ms\-\_\-data@{load\-\_\-ms\-\_\-data}!hmatrix.cpp@{hmatrix.\-cpp}}
+\subsubsection[{load\-\_\-ms\-\_\-data}]{\setlength{\rightskip}{0pt plus 5cm}int load\-\_\-ms\-\_\-data (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{res\-Name, }
+\item[{vector$<$ vector$<$ int $>$ $>$ \&}]{resinter, }
+\item[{vector$<$ vector$<$ char $>$ $>$ \&}]{hinter, }
+\item[{string}]{ms\-\_\-dat\-\_\-file = {\ttfamily \char`\"{}ms.dat\char`\"{}}}
+\end{DoxyParamCaption}
+)}}\label{hmatrix_8cpp_ae81cfaa5aaa07ee8dc7b567571f814b1}
+Load all the microstates from file ms.\-dat, which is a binary file. The first 4 bytes is an integer giving the number of key residues whose microstates are saved. Followd by the names of the key residues in a format like A\-S\-P\-A0085. Then comes a set of microstate records, which have the conformer id number of the chosen conformer of each residue in each microstate.
+
+
+\begin{DoxyParams}{Parameters}
+{\em res\-Name} & the names of key residues whose microstates are saved and only which are shown in the hbond network. \\
+\hline
+{\em resinter} & the number of hbonding between two residues among all the microstates. \\
+\hline
+{\em hinter} & the matrix stores the hbond info between every two conformers, in which the element is either 0 or 1. \\
+\hline
+{\em ms\-\_\-dat\-\_\-file} & the name of the binary file which saves all the microstates. \\
+\hline
+\end{DoxyParams}
+\hypertarget{hmatrix_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{\index{hmatrix.\-cpp@{hmatrix.\-cpp}!main@{main}}
+\index{main@{main}!hmatrix.cpp@{hmatrix.\-cpp}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{hmatrix_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+\hypertarget{hmatrix_8cpp_a084d8f59d56eea1c95cca39c97ef65af}{\index{hmatrix.\-cpp@{hmatrix.\-cpp}!output\-\_\-hb\-\_\-txt@{output\-\_\-hb\-\_\-txt}}
+\index{output\-\_\-hb\-\_\-txt@{output\-\_\-hb\-\_\-txt}!hmatrix.cpp@{hmatrix.\-cpp}}
+\subsubsection[{output\-\_\-hb\-\_\-txt}]{\setlength{\rightskip}{0pt plus 5cm}void output\-\_\-hb\-\_\-txt (
+\begin{DoxyParamCaption}
+\item[{vector$<$ string $>$ \&}]{res\-Name, }
+\item[{vector$<$ vector$<$ int $>$ $>$ \&}]{resinter, }
+\item[{int}]{total\-State, }
+\item[{float}]{threshold = {\ttfamily 0.001}, }
+\item[{string}]{hb\-\_\-txt\-\_\-file = {\ttfamily \char`\"{}hb.txt\char`\"{}}}
+\end{DoxyParamCaption}
+)}}\label{hmatrix_8cpp_a084d8f59d56eea1c95cca39c97ef65af}
+Write the probability of hbond between two residues into file \char`\"{}hb.\-txt\char`\"{}. 
+\begin{DoxyParams}{Parameters}
+{\em res\-Name} & the names of key residues whose microstates are saved and only which are shown in the hbond network. \\
+\hline
+{\em resinter} & the number of hbonding between two residues among all the microstates. \\
+\hline
+{\em total\-State} & the number of all the microstates. \\
+\hline
+{\em threshold} & the hbond connection is written if the probability is larger or equal to this threshold. \\
+\hline
+{\em hb\-\_\-txt\-\_\-file} & the name of the text file which outputs the probability of hbonding between two residues. \\
+\hline
+\end{DoxyParams}

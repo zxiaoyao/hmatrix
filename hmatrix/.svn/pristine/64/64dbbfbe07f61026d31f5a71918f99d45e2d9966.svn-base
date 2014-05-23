@@ -1,0 +1,23 @@
+#ifndef _PW_H_
+#define _PW_H_
+
+#include <iostream>
+#include <fstream>
+
+
+#include "allstate.h"
+//template <class item>
+class pw
+{
+public:	
+
+    Allstate state;    // all the microstates
+    std::vector < std::vector <char>  > hinter;   // h bond interaction between conformers
+    std::vector < std::vector <int> > resinter; // h bond interaction between residues
+
+    int load_h();
+    int get_resinter();
+    int output_matrix();
+};
+
+#endif

@@ -1,0 +1,29 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <map>
+#include <iomanip>
+#include <cmath>
+#include "pw.h"
+
+using namespace std;
+
+vector <string> Mstate::head_spe;
+int Mstate::n_spe = 0;
+map < unsigned short, pair < string, pair <int, int> > > Mstate::id2conf;
+
+int main()
+{
+	
+    pw hbond;
+    hbond.state.load_ms();
+    hbond.load_h();
+    hbond.get_resinter();
+    hbond.output_matrix();
+
+//    hbond.state.output_all();
+    printf("n_conf: %d\n", (int) hbond.hinter.size());
+    return 0;
+}

@@ -1,0 +1,101 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <map>
+#include <iomanip>
+#include <cmath>
+
+
+using namespace std;
+
+int main()
+{
+	time_t time_start = time(NULL);
+
+	ifstream iHbfile("hb.dat", ios::in | ios::binary);
+	int n_conf;
+	vector<vector<char> > hinter;
+
+	iHbfile.read((char *) &n_conf, sizeof(int));
+	hinter.resize(n_conf);
+	for (int i=0; i<n_conf; i++) hinter[i].resize(n_conf);
+
+	for (int i=0; i<n_conf; i++) {
+		for (int j=0; j<n_conf; j++) {
+			iHbfile.read((char *) &hinter[i][j], 1);
+		}
+	}
+	iHbfile.close();
+
+	int n_spe, count;
+	unsigned short conf;
+	char buffer[9];
+	double H_state, Hsq_state;
+	vector <string> resName;
+	vector <unsigned short> iconf;
+
+	ifstream iMsfile("ms.dat", ios::in | ios::binary);
+
+	// n_spe gives the number of special residues
+	iMsfile.read((char *) &n_spe, 4);
+	cout << "There are " << n_spe << " key residues." << endl;
+	// resName are the names of the special residues
+	for (int i_spe=0; i_spe<n_spe; i_spe++) {
+		iMsfile.read(buffer, 8);
+		buffer[8] = '\0';
+		resName.push_back(string(buffer));
+	}
+
+	vector<vector<int> > resinter;
+	resinter.resize(n_spe);
+	for (size_t i=0; i<n_spe; i++) resinter[i].resize(n_spe);
+
+	int totalState = 0;
+	int totalRecords = 0;
+
+	const int PRINT_INTERVAL = 5000;
+	while (iMsfile.read((char *) &conf, 2)) {
+		iconf.push_back(conf);
+		for (int i_spe=1; i_spe<n_spe; i_spe++) {
+			iMsfile.read((char *) &conf, 2);
+			iconf.push_back(conf);
+		}
+		iMsfile.read((char *) &H_state, 8);
+		iMsfile.read((char *) &Hsq_state, 8);
+		iMsfile.read((char *) &count, 4);
+
+		totalRecords++;
+		totalState += count;
+		if (totalRecords % PRINT_INTERVAL == 0) cout << totalRecords << " records have been loaded." << endl;
+
+		for (int i_res=0; i_res<n_spe; i_res++) {
+			for (int j_res=0; j_res<n_spe; j_res++) {
+				if (j_res == i_res) continue;
+				resinter[i_res][j_res] += hinter[iconf[i_res]][iconf[j_res]] * count;
+			}
+		}
+		iconf.clear();
+	}
+	iMsfile.close();
+	cout << totalRecords << " records and " << totalState << " states has been loaded." << endl;
+	cout << "Total time to load ms.dat: " << time(NULL) - time_start << "." << endl;
+	const float THRESHOLD_TO_WRITE = 0.001;
+
+	ofstream ofile("hb.txt", ios::out);
+	for (int i=0; i<n_spe; i++) {
+		for (int j=0; j<n_spe; j++) {
+			if ((float) resinter[i][j]/totalState >= THRESHOLD_TO_WRITE) {
+				ofile << resName[i] << '\t' << resName[j] << '\t' << fixed << setprecision(3) << ((float) resinter[i][j]/totalState) << endl;;
+			}
+		}
+	}
+	ofile.close();
+
+
+
+	cout << "Total time: " << time(NULL) - time_start << "." << endl;
+
+    return 0;
+}

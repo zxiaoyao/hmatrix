@@ -1,0 +1,74 @@
+#include "allstate.h"
+
+using namespace std;
+
+int Allstate::load_ms()
+{
+    int n_spe, count;
+    unsigned short conf;
+    char buffer[9];
+    double H_state, Hsq_state;
+    vector <string> resName;
+    vector <unsigned short> iconf;
+
+    Mstate samp_state;
+    allcount = 0;
+
+    ifstream ifile("ms.dat", ios::in | ios::binary);
+	
+	// n_spe gives the number of special residues 
+    ifile.read((char *) &n_spe, 4);
+	
+	// resName are the names of the special residues
+    for (int i_spe=0; i_spe<n_spe; i_spe++) {
+        ifile.read(buffer, 8);
+        buffer[8] = '\0';
+        resName.push_back(string(buffer));
+    }
+    Mstate::n_spe = n_spe;
+    Mstate::head_spe = resName;
+
+//    while (!ifile.eof()) {
+    while (ifile.read((char *) &conf, 2)) {
+    	iconf.push_back(conf);
+        for (int i_spe=1; i_spe<n_spe; i_spe++) {
+            ifile.read((char *) &conf, 2);
+            iconf.push_back(conf);
+        }
+        ifile.read((char *) &H_state, 8);
+        ifile.read((char *) &Hsq_state, 8);
+        ifile.read((char *) &count, 4);
+
+        samp_state.iconf = iconf;
+        iconf.clear();
+        samp_state.H = H_state;
+        samp_state.Hsq = Hsq_state;
+        samp_state.count = count;
+        allcount += count;
+
+        all_states.push_back(samp_state);
+    }
+
+	// it's weird here, but..
+    //all_states.erase(all_states.end()-1);
+
+
+    return 0;
+}
+
+int Allstate::output_all()
+{
+    FILE *fp;
+    fp = fopen("ms.txt", "w");
+
+    for (size_t i=0; i<all_states.size(); i++) {
+        for (int j=0; j<Mstate::n_spe; j++) {
+            fprintf(fp, "%3d", all_states[i].iconf[j]);
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+     
+    return 0;
+}

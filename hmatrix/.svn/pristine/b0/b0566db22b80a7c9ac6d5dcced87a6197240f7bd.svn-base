@@ -1,0 +1,2 @@
+all:
+	g++ -o hmatrix hmatrix.cpp pw.cpp allstate.cpp mstate.cpp

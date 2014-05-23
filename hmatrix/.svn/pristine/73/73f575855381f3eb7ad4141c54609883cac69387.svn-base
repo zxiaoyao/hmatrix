@@ -1,0 +1,34 @@
+#ifndef _ALLSTATE_H_
+#define _ALLSTATE_H_
+
+#include <iostream>
+#include <fstream>
+
+#include <map>
+#include <string>
+#include <vector>
+
+#include <cstdlib>
+#include <cmath>
+
+#include "mstate.h"
+
+
+/* this class stores all the microstates */
+class Allstate
+{
+public:
+	// an array to store all the states
+    std::vector <Mstate> all_states;
+	
+	// number of states
+    int allcount;      
+
+	/* load data from file ms.dat */
+    int load_ms();
+	
+	/* output all the microstates in txt format */
+    int output_all();
+};
+    
+#endif

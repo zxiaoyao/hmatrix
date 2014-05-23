@@ -1,0 +1,79 @@
+#ifndef _MSTATE_H_
+#define _MSTATE_H_
+
+#include <iostream>
+#include <fstream>
+
+#include <string>
+#include <vector>
+#include <map>
+
+#include <cstdlib>
+#include <cmath>
+
+/** This is one microstate in the MC sampling.
+ *
+ */
+class Mstate
+{
+    public:
+        Mstate() : e(0), p(0), crg(0) {};
+	
+	    // check whether have the same microstate with source state
+        bool operator== (Mstate &source);
+		
+		// check whether have the same charge state with source microstate
+        bool same_crg(Mstate &source);
+	
+		// merge another same microstate "source"
+        Mstate& merge(Mstate &source);
+	
+		// some statistics of this microstate
+        Mstate& stat();
+		
+		// load one microstate from a binary file
+        void load_binary(std::ifstream &ifile);
+
+		// write one microstate to a binary file
+        void write_binary(std::ofstream &ofile);
+	
+	
+	    // read from head3.lst
+        static int load_id2conf(void);
+
+	
+	/* data members of a microstate:
+	    iconf:		the conformer sequence of a microstate
+	    H:			enthalpy of the state
+		Hsq:		square of the enthalpy
+	    count:		times of appearence of this state
+	    hashvalue:	hash value of a microstate, used to compare two states
+		e:			number of electron
+		p:			number of proton
+		crg:		charge of the state
+		H_avg:		average enthalpy of this same microstate (probably we don't select all the residues to be the special ones)
+		H_std:		std of a series of this same microstate
+	 */
+        std::vector <unsigned short> iconf;
+        double H;
+        double Hsq;
+        int count;
+        int hashvalue;
+
+        int e;
+        int p;
+        int crg;
+        double H_avg;
+        double H_std;
+
+	/* static members of the microstate class
+		head_spe:		a sequence of special residue names for all the microstates
+		n_spe:			number of special residue names
+		id2conf:		a map between ID and conformer name  (id, (name, (e, p)))
+	 */
+        static std::vector <std::string> head_spe;
+        static int n_spe;
+        static std::map < unsigned short, std::pair < std::string, std::pair <int, int> > > id2conf;
+};
+
+#endif

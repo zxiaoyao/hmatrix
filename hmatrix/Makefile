@@ -1,2 +1,8 @@
 all:
-	g++ -o hmatrix hmatrix.cpp
+	@mkdir -p bin
+	g++ -o bin/hmatrix hmatrix.cpp
+	
+clean:
+	rm -rf bin/hmatrix
+	
+	

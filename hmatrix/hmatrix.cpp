@@ -21,7 +21,7 @@ using namespace std;
  * @param hb_dat_file the name of the binary file which saves the hbond info between every two conformers.
  */
 void load_hb_data(vector<vector<char> > &hinter, string hb_dat_file="hb.dat") {
-	ifstream iHbfile(hb_dat_file, ios::in | ios::binary);
+	ifstream iHbfile(hb_dat_file.c_str(), ios::in | ios::binary);
 	int n_conf;
 
 	iHbfile.read((char *) &n_conf, sizeof(int));
@@ -52,7 +52,7 @@ void load_hb_data(vector<vector<char> > &hinter, string hb_dat_file="hb.dat") {
 int load_ms_data(vector<string> &resName, vector<vector<int> > &resinter,
 				vector<vector<char> > &hinter, string ms_dat_file="ms.dat") {
 
-	ifstream iMsfile(ms_dat_file, ios::in | ios::binary);
+	ifstream iMsfile(ms_dat_file.c_str(), ios::in | ios::binary);
 
 	// n_spe gives the number of special residues
 	int n_spe;
@@ -124,7 +124,7 @@ int load_ms_data(vector<string> &resName, vector<vector<int> > &resinter,
 void output_hb_txt(vector<string> &resName, vector<vector<int> > &resinter, int totalState, float threshold=0.001,
 					string hb_txt_file="hb.txt") {
 
-	ofstream ofile(hb_txt_file, ios::out);
+	ofstream ofile(hb_txt_file.c_str(), ios::out);
 	for (int i=0; i<resinter.size(); i++) {
 		for (int j=0; j<resinter.size(); j++) {
 			if ((float) resinter[i][j]/totalState >= threshold) {
